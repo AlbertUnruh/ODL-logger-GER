@@ -1,5 +1,6 @@
 from os import getenv
 from time import sleep
+from traceback import print_exc
 
 from ODL_logger_GER import Handler, DiscordAdapter
 
@@ -23,5 +24,10 @@ handler = Handler(
 
 
 while True:
-    handler.request()
-    sleep(interval)
+    try:
+        handler.request()
+    except:  # noqa E722
+        print_exc()
+        sleep(30)
+    finally:
+        sleep(interval)
