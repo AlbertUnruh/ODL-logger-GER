@@ -1,3 +1,4 @@
+from datetime import datetime
 from os import getenv
 from time import sleep
 from traceback import print_exc
@@ -24,10 +25,13 @@ handler = Handler(
 
 
 while True:
+    print(f"requesting... (UTC: {datetime.utcnow()})")
     try:
         handler.request()
-    except:  # noqa E722
+    except BaseException as e:
         print_exc()
+        if isinstance(e, KeyboardInterrupt):
+            exit("KeyBoarInterrupt called")
         sleep(30)
     finally:
         sleep(interval)
