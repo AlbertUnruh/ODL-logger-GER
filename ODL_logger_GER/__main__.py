@@ -10,7 +10,7 @@ __import__("dotenv").load_dotenv()
 
 
 interval = 60
-timeout = 1
+timeout = 20
 
 webhook_url = getenv("WEBHOOK_URL")
 url = (
