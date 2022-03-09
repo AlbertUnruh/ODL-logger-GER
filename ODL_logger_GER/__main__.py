@@ -10,6 +10,7 @@ __import__("dotenv").load_dotenv()
 
 
 interval = 60
+timeout = 1
 
 webhook_url = getenv("WEBHOOK_URL")
 url = (
@@ -27,7 +28,7 @@ handler = Handler(
 while True:
     print(f"requesting... (UTC: {datetime.utcnow()})")
     try:
-        handler.request()
+        handler.request(timeout=timeout)
     except BaseException as e:
         print_exc()
         if isinstance(e, KeyboardInterrupt):

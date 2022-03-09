@@ -20,10 +20,16 @@ class Handler:
         assert isinstance(adapter, BaseAdapter)
         self.adapter = adapter
 
-    def request(self, url: str | None = None) -> Data:
-        with TorRequest() as session:
-            result = session.get(url or self.url)
-        data = Data(d=result.json())
-        if self.adapter is not None:
-            self.adapter.handle(data)
-        return data
+    def request(
+        self, url: str | None = None, timeout: float | tuple[float, float] | None = None
+    ) -> Data:
+        # ToDo: create timeout for the session itself
+        try:
+            with TorRequest() as session:
+                result = session.get(url or self.url, timeout=timeout)
+            data = Data(d=result.json())
+            if self.adapter is not None:
+                self.adapter.handle(data)
+            return data
+        except TimeoutError:
+            return Data({}, True)
